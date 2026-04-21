@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Memory Game</title>
+  <title>Spirli Memory</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -81,15 +81,15 @@
     }
     .stat-value { font-size: 1.3rem; font-weight: 800; color: #62d84e; }
 
-    /* Board — 8 cols desktop, 4 cols mobile */
+    /* Board — 5 cols × 4 rows desktop, 4 cols mobile */
     .board {
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
-      gap: 7px;
-      max-width: 860px;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      max-width: 640px;
       width: 100%;
     }
-    @media (max-width: 600px) {
+    @media (max-width: 500px) {
       .board { grid-template-columns: repeat(4, 1fr); gap: 6px; }
     }
 
@@ -237,7 +237,7 @@
 <body>
 
   <div class="topnav">
-    <div class="nav-title">Memory <span>Game</span></div>
+    <div class="nav-title">Spirli <span>Memory</span></div>
     <div class="nav-right">
       <a href="scores.html" class="nav-link">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
@@ -253,7 +253,7 @@
 
   <div class="stats">
     <div class="stat"><div class="stat-label">Moves</div><div class="stat-value" id="moves">0</div></div>
-    <div class="stat"><div class="stat-label">Pairs</div><div class="stat-value" id="pairs">0 / 16</div></div>
+    <div class="stat"><div class="stat-label">Pairs</div><div class="stat-value" id="pairs">0 / 10</div></div>
     <div class="stat"><div class="stat-label">Time</div><div class="stat-value" id="timer">0:00</div></div>
   </div>
 
@@ -275,7 +275,7 @@
       ██
        ▪</pre>
       <h2>You <span>Win!</span></h2>
-      <p>All 16 pairs matched!</p>
+      <p>All 10 pairs matched!</p>
       <div class="win-stats">
         <div class="win-stat">
           <div class="win-stat-label">Moves</div>
@@ -313,10 +313,16 @@
 
     // ── Photos ──
     const PHOTOS = [
-      'photo01.jpg','photo02.jpg','photo03.jpg','photo04.jpg',
-      'photo05.jpg','photo06.jpg','photo07.jpg','photo08.jpg',
-      'photo09.jpg','photo10.jpg','photo11.jpg','photo12.jpg',
-      'photo13.jpg','photo14.jpg','photo15.jpg','photo16.jpg',
+      'photo02.jpg', // dog + bread
+      'photo05.jpg', // father & daughter dinner
+      'photo06.jpg', // family + giraffe safari
+      'photo07.jpg', // elephants at night
+      'photo08.jpg', // colourful smoothies
+      'photo09.jpg', // rock hyrax
+      'photo11.jpg', // family selfie in field
+      'photo14.jpg', // mountain hike
+      'photo15.jpg', // ski winter
+      'photo16.jpg', // outdoor jacuzzi
     ];
     const TOTAL_PAIRS = PHOTOS.length; // 16
 
