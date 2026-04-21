@@ -451,7 +451,7 @@
         board.querySelector(`[data-idx="${b}"]`).classList.add('matched');
         matched++;pairsEl.textContent=`${matched} / ${TOTAL_PAIRS}`;
         flipped=[];locked=false;
-        if(matched===TOTAL_PAIRS){clearInterval(timerInterval);setTimeout(()=>{saveScore();showWin();},500);}
+        if(matched===TOTAL_PAIRS){clearInterval(timerInterval);setTimeout(async()=>{await saveScore();showWin();},500);}
       }else{
         setTimeout(()=>{
           board.querySelector(`[data-idx="${a}"]`).classList.remove('flipped');
@@ -461,23 +461,28 @@
       }
     }
 
-    function saveScore(){
+    async function saveScore(){
       const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-      const scores=JSON.parse(localStorage.getItem('memoryScores')||'[]');
-      scores.push({name:currentUser,moves,seconds,date:today});
-      if(scores.length>100)scores.splice(0,scores.length-100);
-      localStorage.setItem('memoryScores',JSON.stringify(scores));
+      try {
+        await fetch('/api/scores',{
+          method:'POST',
+          headers:{'Content-Type':'application/json'},
+          body:JSON.stringify({name:currentUser,moves,seconds,date:today})
+        });
+      } catch(e){}
     }
 
-    function showWin(){
+    async function showWin(){
       winMovesEl.textContent=moves; winTimeEl.textContent=formatTime(seconds);
-      const scores=JSON.parse(localStorage.getItem('memoryScores')||'[]');
-      scores.sort((a,b)=>a.moves-b.moves||a.seconds-b.seconds);
-      const rank=scores.findIndex(s=>s.name===currentUser&&s.moves===moves&&s.seconds===seconds)+1;
-      const medals={1:'🥇',2:'🥈',3:'🥉'};
-      winRankEl.innerHTML=rank<=3
-        ?`${medals[rank]} <strong>#${rank} on the leaderboard!</strong>`
-        :`Your rank: <strong>#${rank}</strong> of ${scores.length} scores`;
+      try {
+        const scores=await fetch('/api/scores').then(r=>r.json());
+        scores.sort((a,b)=>a.moves-b.moves||a.seconds-b.seconds);
+        const rank=scores.findIndex(s=>s.name===currentUser&&s.moves===moves&&s.seconds===seconds)+1;
+        const medals={1:'🥇',2:'🥈',3:'🥉'};
+        winRankEl.innerHTML=rank>0&&rank<=3
+          ?`${medals[rank]} <strong>#${rank} on the leaderboard!</strong>`
+          :rank>0?`Your rank: <strong>#${rank}</strong> of ${scores.length} scores`:'';
+      } catch(e){ winRankEl.innerHTML=''; }
       winOverlay.classList.add('show');
     }
 

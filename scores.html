@@ -157,10 +157,15 @@
     }
     const currentUser=localStorage.getItem('memoryUser')||'';
 
-    function renderScores(){
-      const scores=JSON.parse(localStorage.getItem('memoryScores')||'[]');
-      scores.sort((a,b)=>a.moves-b.moves||a.seconds-b.seconds);
+    async function renderScores(){
       const list=document.getElementById('scoresList');
+      list.innerHTML=`<div class="no-scores" style="padding:40px 0;opacity:.5">Loading…</div>`;
+      let scores;
+      try { scores=await fetch('/api/scores').then(r=>r.json()); }
+      catch(e){
+        list.innerHTML=`<div class="no-scores"><div class="big">⚠️</div>Could not load scores.</div>`;
+        return;
+      }
       if(scores.length===0){
         list.innerHTML=`<div class="no-scores"><div class="big">🏆</div>No scores yet — yebo, go play!</div>`;
         return;
@@ -178,10 +183,9 @@
         </div>`).join('');
     }
 
-    document.getElementById('clearBtn').addEventListener('click',()=>{
+    document.getElementById('clearBtn').addEventListener('click', async ()=>{
       if(!currentUser)return;
-      const kept=JSON.parse(localStorage.getItem('memoryScores')||'[]').filter(s=>s.name!==currentUser);
-      localStorage.setItem('memoryScores',JSON.stringify(kept));
+      await fetch(`/api/scores?name=${encodeURIComponent(currentUser)}`,{method:'DELETE'});
       renderScores();
     });
 
