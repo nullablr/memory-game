@@ -329,11 +329,20 @@
       location.replace('login.html');
     });
 
-    // ── Single-photo tile mode ──
-    const PHOTO    = 'photo11.jpg';
-    const IMG_COLS = 5;
-    const IMG_ROWS = 2;
-    const TOTAL_PAIRS = IMG_COLS * IMG_ROWS; // 10
+    // ── 10 full photos — one per pair ──
+    const PHOTOS = [
+      'photo02.jpg',
+      'photo05.jpg',
+      'photo06.jpg',
+      'photo07.jpg',
+      'photo08.jpg',
+      'photo09.jpg',
+      'photo11.jpg',
+      'photo14.jpg',
+      'photo15.jpg',
+      'photo16.jpg',
+    ];
+    const TOTAL_PAIRS = PHOTOS.length; // 10
 
     let cards = [], flipped = [], matched = 0, moves = 0;
     let locked = false, started = false, timerInterval = null, seconds = 0;
@@ -367,12 +376,7 @@
       pairsEl.textContent = `0 / ${TOTAL_PAIRS}`;
       timerEl.textContent = '0:00';
       winOverlay.classList.remove('show');
-
-      const segments = [];
-      for (let r = 0; r < IMG_ROWS; r++)
-        for (let c = 0; c < IMG_COLS; c++)
-          segments.push({ col: c, row: r });
-      cards = shuffle([...segments, ...segments].map((seg, i) => ({ ...seg, id: i })));
+      cards = shuffle(PHOTOS.flatMap((src, photoIdx) => [{ photoIdx, src }, { photoIdx, src }]));
       renderBoard();
     }
 
@@ -391,32 +395,12 @@
                 <path d="M5,42 C22,28 38,60 55,46 C72,32 88,42 95,38" stroke="rgba(255,255,255,.18)" stroke-width="2" stroke-linecap="round" fill="none"/>
               </svg>
             </div>
-            <div class="card-front" id="front-${idx}"></div>
+            <div class="card-front">
+              <img src="${card.src}" alt="" onerror="this.parentElement.style.background='#280008'" />
+            </div>
           </div>`;
         el.addEventListener('click', () => onCardClick(idx));
         board.appendChild(el);
-      });
-
-      requestAnimationFrame(() => {
-        const firstCard = board.querySelector('.card');
-        if (!firstCard) return;
-        const cardW = firstCard.offsetWidth;
-        const cardH = firstCard.offsetHeight;
-        const imgW  = cardW * IMG_COLS;
-        const imgH  = cardH * IMG_ROWS;
-        cards.forEach((card, idx) => {
-          const front = document.getElementById(`front-${idx}`);
-          const img   = document.createElement('img');
-          img.src = PHOTO;
-          img.style.cssText = `
-            position:absolute;
-            width:${imgW}px; height:${imgH}px;
-            left:${-card.col * cardW}px; top:${-card.row * cardH}px;
-            object-fit:cover; image-orientation:from-image;
-            pointer-events:none; user-select:none;
-          `;
-          front.appendChild(img);
-        });
       });
     }
 
@@ -432,8 +416,7 @@
 
     function checkMatch() {
       const [a, b] = flipped;
-      const isMatch = cards[a].col === cards[b].col && cards[a].row === cards[b].row;
-      if (isMatch) {
+      if (cards[a].photoIdx === cards[b].photoIdx) {
         board.querySelector(`[data-idx="${a}"]`).classList.add('matched');
         board.querySelector(`[data-idx="${b}"]`).classList.add('matched');
         matched++;
