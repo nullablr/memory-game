@@ -3,75 +3,82 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spirlini Memory — Sign In</title>
+  <title>Spirlini Memory 🇿🇦</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
       min-height: 100vh;
-      background: #180003;
+      background: #051008;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
       padding: 24px 16px;
       color: #fff;
     }
 
-    .card {
-      background: #280008;
-      border: 2px solid rgba(244,0,9,.4);
-      border-radius: 24px;
-      padding: 44px 36px 40px;
-      text-align: center;
-      width: 100%;
-      max-width: 400px;
-      animation: fadeUp .4s ease;
-      box-shadow: 0 0 40px rgba(244,0,9,.15);
-    }
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+    /* Mini SA flag strip at top */
+    .flag-top {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: 7px;
+      background: linear-gradient(
+        to bottom,
+        #DE3831 0%, #DE3831 28%,
+        #fff 28%,    #fff 42%,
+        #007A4D 42%, #007A4D 58%,
+        #fff 58%,    #fff 72%,
+        #002395 72%, #002395 100%
+      );
+      z-index: 10;
     }
 
-    .icon {
-      width: 72px; height: 72px;
-      background: rgba(244,0,9,.15);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-      border: 2px solid rgba(244,0,9,.3);
+    .card {
+      background: #0a1f0f;
+      border: 2px solid rgba(0,122,77,.4);
+      border-radius: 24px;
+      padding: 44px 36px 36px;
+      text-align: center; width: 100%; max-width: 400px;
+      animation: fadeUp .4s ease;
+      box-shadow: 0 0 40px rgba(0,122,77,.12);
     }
-    .icon svg { width: 34px; height: 34px; color: #F40009; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(20px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .flag-icon {
+      font-size: 3rem; margin-bottom: 12px; line-height: 1;
+      display: block;
+    }
 
     h1 {
       font-family: 'Pacifico', cursive;
-      font-size: 2rem; font-weight: 400;
-      margin-bottom: 8px; letter-spacing: .3px;
+      font-size: 2rem; font-weight: 400; margin-bottom: 6px;
       color: #fff;
     }
-    h1 span { color: #F40009; }
+    h1 span { color: #FFB612; }
 
+    .howzit {
+      font-size: .95rem; color: #007A4D;
+      font-weight: 800; margin-bottom: 4px;
+    }
     .subtitle {
-      font-size: .9rem;
-      color: rgba(255,255,255,.45);
-      margin-bottom: 32px;
-      line-height: 1.5;
+      font-size: .85rem; color: rgba(255,255,255,.4);
+      margin-bottom: 28px; line-height: 1.5;
     }
 
     input {
       display: block; width: 100%;
       padding: 15px 18px;
       background: rgba(255,255,255,.06);
-      border: 1.5px solid rgba(244,0,9,.35);
-      border-radius: 14px;
-      color: #fff; font-size: 1rem; outline: none;
-      transition: border-color .2s, background .2s;
-      margin-bottom: 14px;
+      border: 1.5px solid rgba(0,122,77,.4);
+      border-radius: 14px; color: #fff;
+      font-size: 1rem; outline: none;
+      transition: border-color .2s, background .2s; margin-bottom: 14px;
     }
     input::placeholder { color: rgba(255,255,255,.3); }
-    input:focus { border-color: #F40009; background: rgba(255,255,255,.09); }
+    input:focus { border-color: #007A4D; background: rgba(255,255,255,.09); }
 
     .error {
       font-size: .83rem; color: #ff6b6b;
@@ -80,59 +87,72 @@
 
     .btn-play {
       width: 100%; padding: 15px;
-      background: #F40009; color: #fff;
+      background: #007A4D; color: #fff;
       border: none; border-radius: 14px;
       font-size: 1rem; font-weight: 800; cursor: pointer;
       transition: background .2s, transform .1s;
-      box-shadow: 0 4px 14px rgba(244,0,9,.45);
+      box-shadow: 0 4px 14px rgba(0,122,77,.45);
     }
-    .btn-play:hover { background: #b80007; }
+    .btn-play:hover { background: #005c39; }
     .btn-play:active { transform: scale(.97); }
 
-    .scores-link { margin-top: 22px; }
+    /* Big 5 row */
+    .animals {
+      margin-top: 24px;
+      font-size: 1.5rem; letter-spacing: 10px;
+      color: rgba(255,255,255,.5);
+    }
+
+    .scores-link { margin-top: 16px; }
     .scores-link a {
-      color: rgba(255,255,255,.35); text-decoration: none;
-      font-size: .85rem;
+      color: rgba(255,255,255,.3); text-decoration: none;
+      font-size: .82rem;
       display: inline-flex; align-items: center; gap: 5px;
       transition: color .2s;
     }
-    .scores-link a:hover { color: #F40009; }
+    .scores-link a:hover { color: #FFB612; }
+
+    .ubuntu {
+      margin-top: 28px; font-size: .7rem;
+      color: rgba(255,255,255,.18); letter-spacing: .08em;
+    }
+    .ubuntu span { color: rgba(255,182,18,.4); }
   </style>
 </head>
 <body>
+  <div class="flag-top"></div>
+
   <div class="card">
-    <div class="icon">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-        <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-        <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-        <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-        <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-      </svg>
-    </div>
+    <span class="flag-icon">🇿🇦</span>
     <h1>Spirlini <span>Memory</span></h1>
-    <p class="subtitle">Enter your name to play and appear on the leaderboard.</p>
+    <div class="howzit">Howzit, boet! 👋</div>
+    <p class="subtitle">Enter your name to play and earn your spot on the leaderboard.</p>
 
     <form id="loginForm" novalidate>
-      <input type="text" id="nameInput" placeholder="Your name"
+      <input type="text" id="nameInput" placeholder="Your name, boet..."
              autocomplete="given-name" maxlength="24" autofocus />
       <div class="error" id="error"></div>
-      <button type="submit" class="btn-play">Play Now</button>
+      <button type="submit" class="btn-play">Yebo! Let's Play 🌿</button>
     </form>
+
+    <div class="animals">🦁 🐘 🦏 🐃 🐆</div>
 
     <div class="scores-link">
       <a href="scores.html">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-        View High Scores
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        View Leaderboard
       </a>
     </div>
   </div>
+
+  <div class="ubuntu"><span>Ubuntu</span> — "I am because we are"</div>
 
   <script>
     if (localStorage.getItem('memoryUser')) location.replace('index.html');
     document.getElementById('loginForm').addEventListener('submit', e => {
       e.preventDefault();
       const name = document.getElementById('nameInput').value.trim();
-      if (!name) { document.getElementById('error').textContent = 'Please enter your name.'; return; }
+      if (!name) { document.getElementById('error').textContent = 'Please enter your name, boet!'; return; }
       localStorage.setItem('memoryUser', name);
       location.replace('index.html');
     });

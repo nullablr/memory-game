@@ -3,114 +3,137 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Spirlini Memory</title>
+  <title>Spirlini Memory 🇿🇦</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet" />
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --red:      #F40009;
-      --red-dark: #b80007;
-      --bg:       #180003;
-      --card-bg:  #280008;
-      --white:    #ffffff;
+      --green:  #007A4D;
+      --gold:   #FFB612;
+      --red:    #DE3831;
+      --blue:   #002395;
+      --black:  #000000;
+      --bg:     #051008;
+      --card-bg:#0a1f0f;
     }
 
     body {
       min-height: 100vh;
       background: var(--bg);
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0 0 48px;
-      color: var(--white);
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0 0 56px;
+      color: #fff;
     }
 
-    /* ── Header banner ── */
+    /* ── SA Flag Header ── */
     .header {
       width: 100%;
-      background: var(--red);
-      padding: 14px 20px 10px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin-bottom: 20px;
       position: relative;
       overflow: hidden;
-    }
-    /* Ribbon wave decoration */
-    .header::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; left: 0; right: 0;
-      height: 14px;
-      background: var(--bg);
-      clip-path: ellipse(52% 100% at 50% 100%);
+      margin-bottom: 0;
     }
 
-    .header-inner {
+    /* SA flag horizontal bands */
+    .flag-bands {
       width: 100%;
-      max-width: 640px;
+      height: 80px;
+      background: linear-gradient(
+        to bottom,
+        #DE3831 0%,   #DE3831 38%,
+        #ffffff 38%,  #ffffff 44%,
+        #007A4D 44%,  #007A4D 56%,
+        #ffffff 56%,  #ffffff 62%,
+        #002395 62%,  #002395 100%
+      );
+      position: relative;
+    }
+
+    /* Y-panga shape overlay */
+    .flag-y {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+    }
+
+    /* Header content over the flag */
+    .header-inner {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 20px;
+      max-width: 640px;
+      margin: 0 auto;
+      left: 50%; transform: translateX(-50%);
+      width: 100%;
     }
 
     .logo {
       font-family: 'Pacifico', cursive;
-      font-size: 1.75rem;
-      color: var(--white);
-      text-shadow: 2px 2px 4px rgba(0,0,0,.35);
-      letter-spacing: .5px;
+      font-size: 1.6rem;
+      color: #fff;
+      text-shadow: 1px 1px 0 rgba(0,0,0,.5), 0 0 20px rgba(0,0,0,.4);
+      letter-spacing: .3px;
+      display: flex; align-items: center; gap: 8px;
     }
 
-    .nav-right { display: flex; align-items: center; gap: 8px; }
+    .nav-right { display: flex; align-items: center; gap: 6px; }
     .nav-link {
       display: inline-flex; align-items: center; gap: 5px;
-      color: rgba(255,255,255,.8);
-      text-decoration: none; font-size: .82rem; font-weight: 700;
-      padding: 6px 12px; border-radius: 100px;
-      background: rgba(255,255,255,.18);
+      color: #fff; text-decoration: none;
+      font-size: .8rem; font-weight: 700;
+      padding: 5px 11px; border-radius: 100px;
+      background: rgba(0,0,0,.35);
       transition: background .2s;
     }
-    .nav-link:hover { background: rgba(255,255,255,.3); }
-
+    .nav-link:hover { background: rgba(0,0,0,.5); }
     .nav-player {
-      font-size: .8rem; color: rgba(255,255,255,.75);
+      font-size: .78rem; color: rgba(255,255,255,.85);
       display: flex; align-items: center; gap: 4px;
     }
     .nav-player strong { color: #fff; }
-
     .btn-logout {
-      background: rgba(255,255,255,.18); border: none;
-      color: rgba(255,255,255,.8); cursor: pointer;
-      padding: 6px 8px; border-radius: 100px;
+      background: rgba(0,0,0,.3); border: none;
+      color: rgba(255,255,255,.85); cursor: pointer;
+      padding: 5px 8px; border-radius: 100px;
       transition: background .2s; line-height: 1;
     }
-    .btn-logout:hover { background: rgba(255,255,255,.3); }
+    .btn-logout:hover { background: rgba(0,0,0,.5); }
+
+    /* ── Big 5 strip ── */
+    .big5-strip {
+      width: 100%;
+      background: rgba(0,122,77,.18);
+      border-bottom: 1px solid rgba(255,182,18,.25);
+      padding: 7px 0;
+      text-align: center;
+      font-size: 1.3rem;
+      letter-spacing: 14px;
+      margin-bottom: 18px;
+    }
 
     /* ── Stats ── */
     .stats {
-      display: flex; gap: 28px;
-      margin-bottom: 18px;
+      display: flex; gap: 24px;
+      margin-bottom: 16px;
       flex-wrap: wrap; justify-content: center;
       padding: 0 16px;
     }
     .stat { text-align: center; }
     .stat-label {
       font-size: .65rem; text-transform: uppercase;
-      letter-spacing: .12em; color: rgba(255,255,255,.45); margin-bottom: 2px;
+      letter-spacing: .12em; color: rgba(255,255,255,.4); margin-bottom: 2px;
     }
-    .stat-value { font-size: 1.4rem; font-weight: 800; color: var(--red); }
+    .stat-value { font-size: 1.35rem; font-weight: 800; color: var(--gold); }
 
     /* ── Board ── */
     .board {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-      max-width: 640px;
-      width: 100%;
+      gap: 8px; max-width: 640px; width: 100%;
       padding: 0 16px;
     }
     @media (max-width: 500px) {
@@ -118,158 +141,184 @@
     }
 
     /* ── Card ── */
-    .card {
-      aspect-ratio: 1; cursor: pointer;
-      perspective: 600px; border-radius: 10px;
-    }
-    .card.matched { pointer-events: none; }
+    .card { aspect-ratio:1; cursor:pointer; perspective:600px; border-radius:10px; }
+    .card.matched { pointer-events:none; }
     .card.matched .card-inner {
-      box-shadow: 0 0 0 3px #fff, 0 0 12px rgba(255,255,255,.4);
+      box-shadow: 0 0 0 3px var(--gold), 0 0 14px rgba(255,182,18,.45);
       border-radius: 10px;
     }
-
     .card-inner {
-      width: 100%; height: 100%; position: relative;
-      transform-style: preserve-3d;
-      transition: transform .4s cubic-bezier(.4,0,.2,1);
-      border-radius: 10px;
+      width:100%; height:100%; position:relative;
+      transform-style:preserve-3d;
+      transition:transform .4s cubic-bezier(.4,0,.2,1);
+      border-radius:10px;
     }
     .card.flipped .card-inner,
-    .card.matched .card-inner { transform: rotateY(180deg); }
-
+    .card.matched .card-inner { transform:rotateY(180deg); }
     .card-back, .card-front {
-      position: absolute; inset: 0; border-radius: 10px;
-      backface-visibility: hidden; -webkit-backface-visibility: hidden;
-      overflow: hidden;
+      position:absolute; inset:0; border-radius:10px;
+      backface-visibility:hidden; -webkit-backface-visibility:hidden; overflow:hidden;
     }
-
-    /* Coca-Cola red card back with wave */
-    .card-back {
-      background: var(--red);
-      display: flex; align-items: center; justify-content: center;
-    }
-    .card-back svg { width: 80%; height: 80%; }
-
-    .card-front { transform: rotateY(180deg); }
+    /* SA flag on card back */
+    .card-back { background: #000; }
+    .card-back svg { width:100%; height:100%; display:block; }
+    .card-front { transform:rotateY(180deg); }
     .card-front img {
-      width: 100%; height: 100%; object-fit: cover;
-      image-orientation: from-image;
-      pointer-events: none; user-select: none; display: block;
+      width:100%; height:100%; object-fit:cover;
+      image-orientation:from-image;
+      pointer-events:none; user-select:none; display:block;
     }
 
-    /* ── Buttons ── */
+    /* ── Subtitle ── */
+    .subtitle {
+      font-size: .82rem; color: rgba(255,255,255,.45);
+      margin-bottom: 14px; text-align: center; padding: 0 16px;
+    }
+    .subtitle span { color: var(--gold); font-weight: 700; }
+
+    /* ── Restart ── */
     .btn-restart {
-      margin-top: 24px; padding: 12px 36px;
-      background: var(--red); color: #fff;
+      margin-top: 22px; padding: 12px 36px;
+      background: var(--green); color: #fff;
       border: none; border-radius: 100px;
       font-size: .95rem; font-weight: 800; cursor: pointer;
       transition: background .2s, transform .1s;
-      box-shadow: 0 4px 14px rgba(244,0,9,.4);
+      box-shadow: 0 4px 14px rgba(0,122,77,.45);
     }
-    .btn-restart:hover { background: var(--red-dark); }
+    .btn-restart:hover { background: #005c39; }
     .btn-restart:active { transform: scale(.97); }
 
     /* ── Win overlay ── */
     .win-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(20,0,3,.92);
-      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
-      align-items: center; justify-content: center;
-      z-index: 100; padding: 16px;
+      display:none; position:fixed; inset:0;
+      background: rgba(2,8,4,.93);
+      backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+      align-items:center; justify-content:center;
+      z-index:100; padding:16px;
     }
-    .win-overlay.show { display: flex; }
+    .win-overlay.show { display:flex; }
 
     .win-card {
       background: var(--card-bg);
-      border: 2px solid var(--red);
+      border: 2px solid var(--gold);
       border-radius: 24px; padding: 36px 40px 32px;
       text-align: center; max-width: 360px; width: 100%;
       animation: pop .45s cubic-bezier(.34,1.56,.64,1);
-      box-shadow: 0 0 40px rgba(244,0,9,.25);
+      box-shadow: 0 0 40px rgba(255,182,18,.2);
     }
     @keyframes pop {
-      from { transform: scale(.6); opacity: 0; }
-      to   { transform: scale(1);  opacity: 1; }
+      from { transform:scale(.6); opacity:0; }
+      to   { transform:scale(1);  opacity:1; }
     }
 
     /* ASCII heart */
     .ascii-heart {
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 15px; line-height: 1.3;
-      color: #ff2d55;
+      font-family:'Courier New',Courier,monospace;
+      font-size:15px; line-height:1.3; color:#ff2d55;
       text-shadow: 0 0 12px rgba(255,45,85,.8), 0 0 28px rgba(255,45,85,.4);
-      display: inline-block; margin-bottom: 18px;
+      display:inline-block; margin-bottom:14px;
       animation: heartbeat 1.0s ease-in-out infinite;
-      white-space: pre; letter-spacing: 2px;
+      white-space:pre; letter-spacing:2px;
     }
     @keyframes heartbeat {
-      0%   { transform: scale(1);    }
-      12%  { transform: scale(1.32); }
-      24%  { transform: scale(1);    }
-      36%  { transform: scale(1.16); }
-      60%  { transform: scale(1);    }
-      100% { transform: scale(1);    }
+      0%  { transform:scale(1);    }
+      12% { transform:scale(1.32); }
+      24% { transform:scale(1);    }
+      36% { transform:scale(1.16); }
+      60% { transform:scale(1);    }
     }
 
     .win-card h2 {
-      font-family: 'Pacifico', cursive;
-      font-size: 2rem; font-weight: 400; margin-bottom: 6px; color: #fff;
+      font-family:'Pacifico',cursive;
+      font-size:1.9rem; font-weight:400; margin-bottom:4px;
     }
-    .win-card h2 span { color: var(--red); }
-    .win-card p { color: rgba(255,255,255,.5); font-size: .88rem; margin-bottom: 20px; }
+    .win-card h2 span { color:var(--gold); }
+    .win-slang { font-size:1rem; color:var(--green); font-weight:800; margin-bottom:6px; }
+    .win-card p { color:rgba(255,255,255,.45); font-size:.85rem; margin-bottom:18px; }
 
-    .win-stats { display: flex; gap: 20px; justify-content: center; margin-bottom: 14px; }
-    .win-stat { text-align: center; }
-    .win-stat-label { font-size: .65rem; text-transform: uppercase; letter-spacing: .12em; color: rgba(255,255,255,.4); }
-    .win-stat-value { font-size: 1.4rem; font-weight: 800; color: var(--red); }
+    .win-stats { display:flex; gap:20px; justify-content:center; margin-bottom:14px; }
+    .win-stat { text-align:center; }
+    .win-stat-label { font-size:.65rem; text-transform:uppercase; letter-spacing:.12em; color:rgba(255,255,255,.4); }
+    .win-stat-value { font-size:1.4rem; font-weight:800; color:var(--gold); }
 
     .win-rank {
-      background: rgba(244,0,9,.1); border: 1px solid rgba(244,0,9,.3);
-      border-radius: 12px; padding: 9px 14px;
-      margin-bottom: 22px; font-size: .86rem; color: rgba(255,255,255,.6);
+      background:rgba(255,182,18,.08); border:1px solid rgba(255,182,18,.3);
+      border-radius:12px; padding:9px 14px; margin-bottom:20px;
+      font-size:.85rem; color:rgba(255,255,255,.6);
     }
-    .win-rank strong { color: var(--red); }
+    .win-rank strong { color:var(--gold); }
 
-    .win-actions { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .win-animals { font-size:1.4rem; letter-spacing:10px; margin-bottom:20px; }
+
+    .win-actions { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
     .win-btn {
-      padding: 11px 24px; border-radius: 100px;
-      font-size: .9rem; font-weight: 800;
-      cursor: pointer; border: none;
-      transition: background .2s, transform .1s;
-      text-decoration: none; display: inline-block;
+      padding:11px 24px; border-radius:100px;
+      font-size:.9rem; font-weight:800;
+      cursor:pointer; border:none;
+      transition:background .2s, transform .1s;
+      text-decoration:none; display:inline-block;
     }
-    .win-btn:active { transform: scale(.97); }
-    .win-btn-red { background: var(--red); color: #fff; box-shadow: 0 3px 10px rgba(244,0,9,.4); }
-    .win-btn-red:hover { background: var(--red-dark); }
-    .win-btn-ghost { background: rgba(255,255,255,.1); color: rgba(255,255,255,.75); }
-    .win-btn-ghost:hover { background: rgba(255,255,255,.18); color: #fff; }
+    .win-btn:active { transform:scale(.97); }
+    .win-btn-green { background:var(--green); color:#fff; box-shadow:0 3px 10px rgba(0,122,77,.4); }
+    .win-btn-green:hover { background:#005c39; }
+    .win-btn-ghost { background:rgba(255,255,255,.1); color:rgba(255,255,255,.75); }
+    .win-btn-ghost:hover { background:rgba(255,255,255,.18); color:#fff; }
 
-    @media (max-width: 420px) {
-      .win-card { padding: 28px 20px 24px; }
-      .ascii-heart { font-size: 11px; }
-      .nav-player { display: none; }
-      .logo { font-size: 1.4rem; }
+    /* ── Ubuntu footer ── */
+    .footer-ubuntu {
+      margin-top: 20px;
+      font-size: .72rem; color: rgba(255,255,255,.22);
+      letter-spacing: .08em; text-align: center;
+    }
+    .footer-ubuntu span { color: rgba(255,182,18,.45); }
+
+    @media (max-width:420px) {
+      .win-card { padding:28px 20px 24px; }
+      .ascii-heart { font-size:11px; }
+      .nav-player { display:none; }
+      .logo { font-size:1.2rem; }
+      .flag-bands { height:64px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Header / nav -->
+  <!-- SA Flag Header -->
   <div class="header">
+    <div class="flag-bands">
+      <!-- SA Flag Y-panga as SVG overlay -->
+      <svg class="flag-y" viewBox="0 0 400 80" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Gold Y border -->
+        <polygon points="0,0 0,80 120,40" fill="#FFB612"/>
+        <!-- Black triangle -->
+        <polygon points="0,0 0,80 104,40" fill="#000000"/>
+        <!-- White in green zone -->
+        <polygon points="0,30 0,50 104,40" fill="#ffffff"/>
+        <!-- Green Y stem -->
+        <polygon points="0,34 0,46 98,40" fill="#007A4D"/>
+      </svg>
+    </div>
     <div class="header-inner">
-      <div class="logo">Spirlini Memory</div>
+      <div class="logo">🇿🇦 Spirlini Memory</div>
       <div class="nav-right">
         <a href="scores.html" class="nav-link">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
           Scores
         </a>
         <div class="nav-player" id="navPlayer"></div>
-        <button class="btn-logout" id="logoutBtn" title="Change player">
+        <button class="btn-logout" id="logoutBtn" title="Log out">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
         </button>
       </div>
     </div>
   </div>
+
+  <!-- Big 5 animals strip -->
+  <div class="big5-strip" title="The Big 5: Lion · Elephant · Rhino · Buffalo · Leopard">
+    🦁 🐘 🦏 🐃 🐆
+  </div>
+
+  <p class="subtitle">Howzit! Match all pairs, <span>lekker</span> style 🌿</p>
 
   <!-- Stats -->
   <div class="stats">
@@ -279,7 +328,11 @@
   </div>
 
   <div class="board" id="board"></div>
-  <button class="btn-restart" id="restartBtn">New Game</button>
+  <button class="btn-restart" id="restartBtn">🔄 New Game</button>
+
+  <div class="footer-ubuntu">
+    <span>Ubuntu</span> — "I am because we are" &nbsp;·&nbsp; 🇿🇦 South Africa
+  </div>
 
   <!-- Win overlay -->
   <div class="win-overlay" id="winOverlay">
@@ -293,8 +346,9 @@
    ♥♥♥♥♥
     ♥♥♥
      ♥</pre>
-      <h2>You <span>Win!</span></h2>
-      <p>All 10 pairs matched!</p>
+      <h2>Sharp <span>Sharp!</span></h2>
+      <div class="win-slang">Eish, you smashed it! 🇿🇦</div>
+      <p>All 10 pairs matched — lekker!</p>
       <div class="win-stats">
         <div class="win-stat">
           <div class="win-stat-label">Moves</div>
@@ -306,9 +360,10 @@
         </div>
       </div>
       <div class="win-rank" id="winRank"></div>
+      <div class="win-animals">🦁 🐘 🦒 🦏 🌸</div>
       <div class="win-actions">
-        <button class="win-btn win-btn-red" onclick="startGame()">Play Again</button>
-        <a href="scores.html" class="win-btn win-btn-ghost">View Scores</a>
+        <button class="win-btn win-btn-green" onclick="startGame()">Play Again</button>
+        <a href="scores.html" class="win-btn win-btn-ghost">Leaderboard</a>
       </div>
     </div>
   </div>
@@ -329,132 +384,119 @@
       location.replace('login.html');
     });
 
-    // ── 10 full photos — one per pair ──
     const PHOTOS = [
-      'photo02.jpg',
-      'photo05.jpg',
-      'photo06.jpg',
-      'photo07.jpg',
-      'photo08.jpg',
-      'photo09.jpg',
-      'photo11.jpg',
-      'photo14.jpg',
-      'photo15.jpg',
-      'photo16.jpg',
+      'photo02.jpg','photo05.jpg','photo06.jpg','photo07.jpg','photo08.jpg',
+      'photo09.jpg','photo11.jpg','photo14.jpg','photo15.jpg','photo16.jpg',
     ];
-    const TOTAL_PAIRS = PHOTOS.length; // 10
+    const TOTAL_PAIRS = PHOTOS.length;
 
-    let cards = [], flipped = [], matched = 0, moves = 0;
-    let locked = false, started = false, timerInterval = null, seconds = 0;
+    let cards=[], flipped=[], matched=0, moves=0;
+    let locked=false, started=false, timerInterval=null, seconds=0;
 
-    const board      = document.getElementById('board');
-    const movesEl    = document.getElementById('moves');
-    const pairsEl    = document.getElementById('pairs');
-    const timerEl    = document.getElementById('timer');
-    const winOverlay = document.getElementById('winOverlay');
-    const winMovesEl = document.getElementById('winMoves');
-    const winTimeEl  = document.getElementById('winTime');
-    const winRankEl  = document.getElementById('winRank');
+    const board=document.getElementById('board'),movesEl=document.getElementById('moves'),
+          pairsEl=document.getElementById('pairs'),timerEl=document.getElementById('timer'),
+          winOverlay=document.getElementById('winOverlay'),winMovesEl=document.getElementById('winMoves'),
+          winTimeEl=document.getElementById('winTime'),winRankEl=document.getElementById('winRank');
 
-    function formatTime(s) { return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`; }
-    function startTimer() {
+    function formatTime(s){return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;}
+    function startTimer(){
       clearInterval(timerInterval);
-      timerInterval = setInterval(() => { seconds++; timerEl.textContent = formatTime(seconds); }, 1000);
+      timerInterval=setInterval(()=>{seconds++;timerEl.textContent=formatTime(seconds);},1000);
     }
-    function shuffle(arr) {
-      for (let i = arr.length-1; i > 0; i--) {
-        const j = Math.floor(Math.random()*(i+1)); [arr[i],arr[j]] = [arr[j],arr[i]];
-      }
+    function shuffle(arr){
+      for(let i=arr.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[arr[i],arr[j]]=[arr[j],arr[i]];}
       return arr;
     }
 
-    function startGame() {
+    // SA flag SVG for card backs
+    const flagSVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <rect width="100" height="50" fill="#DE3831"/>
+      <rect y="50" width="100" height="50" fill="#002395"/>
+      <rect y="39" width="100" height="22" fill="#fff"/>
+      <rect y="43" width="100" height="14" fill="#007A4D"/>
+      <polygon points="0,0 0,100 52,50" fill="#FFB612"/>
+      <polygon points="0,0 0,100 44,50" fill="#000"/>
+      <polygon points="0,39 0,61 44,50" fill="#fff"/>
+      <polygon points="0,43 0,57 40,50" fill="#007A4D"/>
+    </svg>`;
+
+    function startGame(){
       clearInterval(timerInterval);
-      seconds = 0; moves = 0; matched = 0;
-      flipped = []; locked = false; started = false;
-      movesEl.textContent = '0';
-      pairsEl.textContent = `0 / ${TOTAL_PAIRS}`;
-      timerEl.textContent = '0:00';
+      seconds=0;moves=0;matched=0;
+      flipped=[];locked=false;started=false;
+      movesEl.textContent='0';
+      pairsEl.textContent=`0 / ${TOTAL_PAIRS}`;
+      timerEl.textContent='0:00';
       winOverlay.classList.remove('show');
-      cards = shuffle(PHOTOS.flatMap((src, photoIdx) => [{ photoIdx, src }, { photoIdx, src }]));
+      cards=shuffle(PHOTOS.flatMap((src,photoIdx)=>[{photoIdx,src},{photoIdx,src}]));
       renderBoard();
     }
 
-    function renderBoard() {
-      board.innerHTML = '';
-      cards.forEach((card, idx) => {
-        const el = document.createElement('div');
-        el.className = 'card';
-        el.dataset.idx = idx;
-        el.innerHTML = `
+    function renderBoard(){
+      board.innerHTML='';
+      cards.forEach((card,idx)=>{
+        const el=document.createElement('div');
+        el.className='card'; el.dataset.idx=idx;
+        el.innerHTML=`
           <div class="card-inner">
-            <div class="card-back">
-              <svg viewBox="0 0 100 60" fill="none">
-                <path d="M5,18 C22,4 38,36 55,22 C72,8 88,18 95,14" stroke="rgba(255,255,255,.65)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
-                <path d="M5,30 C22,16 38,48 55,34 C72,20 88,30 95,26" stroke="rgba(255,255,255,.35)" stroke-width="3" stroke-linecap="round" fill="none"/>
-                <path d="M5,42 C22,28 38,60 55,46 C72,32 88,42 95,38" stroke="rgba(255,255,255,.18)" stroke-width="2" stroke-linecap="round" fill="none"/>
-              </svg>
-            </div>
+            <div class="card-back">${flagSVG}</div>
             <div class="card-front">
-              <img src="${card.src}" alt="" onerror="this.parentElement.style.background='#280008'" />
+              <img src="${card.src}" alt="" onerror="this.parentElement.style.background='#0a1f0f'"/>
             </div>
           </div>`;
-        el.addEventListener('click', () => onCardClick(idx));
+        el.addEventListener('click',()=>onCardClick(idx));
         board.appendChild(el);
       });
     }
 
-    function onCardClick(idx) {
-      if (locked) return;
-      const el = board.querySelector(`[data-idx="${idx}"]`);
-      if (!el || el.classList.contains('flipped') || el.classList.contains('matched')) return;
-      if (!started) { started = true; startTimer(); }
-      el.classList.add('flipped');
-      flipped.push(idx);
-      if (flipped.length === 2) { locked = true; moves++; movesEl.textContent = moves; checkMatch(); }
+    function onCardClick(idx){
+      if(locked)return;
+      const el=board.querySelector(`[data-idx="${idx}"]`);
+      if(!el||el.classList.contains('flipped')||el.classList.contains('matched'))return;
+      if(!started){started=true;startTimer();}
+      el.classList.add('flipped');flipped.push(idx);
+      if(flipped.length===2){locked=true;moves++;movesEl.textContent=moves;checkMatch();}
     }
 
-    function checkMatch() {
-      const [a, b] = flipped;
-      if (cards[a].photoIdx === cards[b].photoIdx) {
+    function checkMatch(){
+      const[a,b]=flipped;
+      if(cards[a].photoIdx===cards[b].photoIdx){
         board.querySelector(`[data-idx="${a}"]`).classList.add('matched');
         board.querySelector(`[data-idx="${b}"]`).classList.add('matched');
-        matched++;
-        pairsEl.textContent = `${matched} / ${TOTAL_PAIRS}`;
-        flipped = []; locked = false;
-        if (matched === TOTAL_PAIRS) { clearInterval(timerInterval); setTimeout(() => { saveScore(); showWin(); }, 500); }
-      } else {
-        setTimeout(() => {
+        matched++;pairsEl.textContent=`${matched} / ${TOTAL_PAIRS}`;
+        flipped=[];locked=false;
+        if(matched===TOTAL_PAIRS){clearInterval(timerInterval);setTimeout(()=>{saveScore();showWin();},500);}
+      }else{
+        setTimeout(()=>{
           board.querySelector(`[data-idx="${a}"]`).classList.remove('flipped');
           board.querySelector(`[data-idx="${b}"]`).classList.remove('flipped');
-          flipped = []; locked = false;
-        }, 900);
+          flipped=[];locked=false;
+        },900);
       }
     }
 
-    function saveScore() {
-      const today = new Date().toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
-      const scores = JSON.parse(localStorage.getItem('memoryScores') || '[]');
-      scores.push({ name: currentUser, moves, seconds, date: today });
-      if (scores.length > 100) scores.splice(0, scores.length - 100);
-      localStorage.setItem('memoryScores', JSON.stringify(scores));
+    function saveScore(){
+      const today=new Date().toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
+      const scores=JSON.parse(localStorage.getItem('memoryScores')||'[]');
+      scores.push({name:currentUser,moves,seconds,date:today});
+      if(scores.length>100)scores.splice(0,scores.length-100);
+      localStorage.setItem('memoryScores',JSON.stringify(scores));
     }
 
-    function showWin() {
-      winMovesEl.textContent = moves;
-      winTimeEl.textContent  = formatTime(seconds);
-      const scores = JSON.parse(localStorage.getItem('memoryScores') || '[]');
-      scores.sort((a,b) => a.moves - b.moves || a.seconds - b.seconds);
-      const rank  = scores.findIndex(s => s.name===currentUser && s.moves===moves && s.seconds===seconds) + 1;
-      const medals = {1:'🥇',2:'🥈',3:'🥉'};
-      winRankEl.innerHTML = rank <= 3
-        ? `${medals[rank]} <strong>#${rank} on the leaderboard!</strong>`
-        : `Your rank: <strong>#${rank}</strong> of ${scores.length} scores`;
+    function showWin(){
+      winMovesEl.textContent=moves; winTimeEl.textContent=formatTime(seconds);
+      const scores=JSON.parse(localStorage.getItem('memoryScores')||'[]');
+      scores.sort((a,b)=>a.moves-b.moves||a.seconds-b.seconds);
+      const rank=scores.findIndex(s=>s.name===currentUser&&s.moves===moves&&s.seconds===seconds)+1;
+      const medals={1:'🥇',2:'🥈',3:'🥉'};
+      winRankEl.innerHTML=rank<=3
+        ?`${medals[rank]} <strong>#${rank} on the leaderboard!</strong>`
+        :`Your rank: <strong>#${rank}</strong> of ${scores.length} scores`;
       winOverlay.classList.add('show');
     }
 
-    document.getElementById('restartBtn').addEventListener('click', startGame);
-    let rt; window.addEventListener('resize', () => { clearTimeout(rt); rt = setTimeout(renderBoard, 150); });
+    document.getElementById('restartBtn').addEventListener('click',startGame);
+    let rt; window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(renderBoard,150);});
     startGame();
   </script>
 </body>
