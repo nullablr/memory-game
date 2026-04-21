@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Memory Game</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #0c1826;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 16px 40px;
+      color: #fff;
+    }
+
+    h1 {
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 6px;
+      letter-spacing: -.3px;
+    }
+    h1 span { color: #62d84e; }
+    .subtitle {
+      font-size: .9rem;
+      color: rgba(255,255,255,.5);
+      margin-bottom: 24px;
+    }
+
+    /* Stats bar */
+    .stats {
+      display: flex;
+      gap: 32px;
+      margin-bottom: 24px;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-label {
+      font-size: .7rem;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255,255,255,.45);
+      margin-bottom: 2px;
+    }
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #62d84e;
+    }
+
+    /* Board */
+    .board {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      width: 100%;
+    }
+
+    /* Card */
+    .card {
+      aspect-ratio: 1;
+      cursor: pointer;
+      perspective: 600px;
+      border-radius: 12px;
+    }
+    .card.matched { pointer-events: none; }
+    .card.matched .card-inner { box-shadow: 0 0 0 3px #62d84e; border-radius: 12px; }
+
+    .card-inner {
+      width: 100%; height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform .45s cubic-bezier(.4,0,.2,1);
+      border-radius: 12px;
+    }
+    .card.flipped .card-inner,
+    .card.matched .card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-back, .card-front {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    /* Card back — pattern */
+    .card-back {
+      background: #1a2f47;
+      border: 2px solid rgba(98,216,78,.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-back svg {
+      width: 40%;
+      height: 40%;
+      opacity: .35;
+    }
+
+    /* Card front — photo tile */
+    .card-front {
+      transform: rotateY(180deg);
+      position: relative;
+    }
+    .card-front img {
+      position: absolute;
+      /* size and position set by JS */
+    }
+
+    /* Restart button */
+    .btn-restart {
+      margin-top: 28px;
+      padding: 11px 32px;
+      background: #62d84e;
+      color: #0c1826;
+      border: none;
+      border-radius: 100px;
+      font-size: .95rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: background .2s, transform .1s;
+    }
+    .btn-restart:hover { background: #4ab038; }
+    .btn-restart:active { transform: scale(.97); }
+
+    /* Win overlay */
+    .win-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(12,24,38,.88);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .win-overlay.show { display: flex; }
+    .win-card {
+      background: #1a2f47;
+      border: 2px solid #62d84e;
+      border-radius: 20px;
+      padding: 40px 48px;
+      text-align: center;
+      max-width: 360px;
+      width: calc(100% - 32px);
+      animation: pop .4s cubic-bezier(.34,1.56,.64,1);
+    }
+    @keyframes pop { from { transform: scale(.7); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .win-emoji { font-size: 3.5rem; margin-bottom: 12px; }
+    .win-card h2 { font-size: 1.8rem; font-weight: 800; margin-bottom: 8px; }
+    .win-card h2 span { color: #62d84e; }
+    .win-card p { color: rgba(255,255,255,.65); font-size: .95rem; margin-bottom: 24px; }
+    .win-stats { display: flex; gap: 24px; justify-content: center; margin-bottom: 28px; }
+    .win-stat { text-align: center; }
+    .win-stat-label { font-size: .72rem; text-transform: uppercase; letter-spacing: .1em; color: rgba(255,255,255,.45); }
+    .win-stat-value { font-size: 1.6rem; font-weight: 800; color: #62d84e; }
+
+    @media (max-width: 480px) {
+      .board { gap: 7px; }
+      h1 { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Memory <span>Game</span></h1>
+  <p class="subtitle">Match all pairs to win!</p>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Moves</div>
+      <div class="stat-value" id="moves">0</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Pairs</div>
+      <div class="stat-value" id="pairs">0 / 8</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Time</div>
+      <div class="stat-value" id="timer">0:00</div>
+    </div>
+  </div>
+
+  <div class="board" id="board"></div>
+
+  <button class="btn-restart" id="restartBtn">New Game</button>
+
+  <!-- Win overlay -->
+  <div class="win-overlay" id="winOverlay">
+    <div class="win-card">
+      <div class="win-emoji">🎉</div>
+      <h2>You <span>Win!</span></h2>
+      <p>Great job — all pairs matched!</p>
+      <div class="win-stats">
+        <div class="win-stat">
+          <div class="win-stat-label">Moves</div>
+          <div class="win-stat-value" id="winMoves">—</div>
+        </div>
+        <div class="win-stat">
+          <div class="win-stat-label">Time</div>
+          <div class="win-stat-value" id="winTime">—</div>
+        </div>
+      </div>
+      <button class="btn-restart" onclick="startGame()">Play Again</button>
+    </div>
+  </div>
+
+  <script>
+    // ── Config ──
+    const IMG_COLS = 4;
+    const IMG_ROWS = 2;
+    const TOTAL_PAIRS = IMG_COLS * IMG_ROWS; // 8
+
+    // ── State ──
+    let cards = [];
+    let flipped = [];
+    let matched = 0;
+    let moves = 0;
+    let locked = false;
+    let timerInterval = null;
+    let seconds = 0;
+    let started = false;
+
+    // ── DOM ──
+    const board      = document.getElementById('board');
+    const movesEl    = document.getElementById('moves');
+    const pairsEl    = document.getElementById('pairs');
+    const timerEl    = document.getElementById('timer');
+    const winOverlay = document.getElementById('winOverlay');
+    const winMovesEl = document.getElementById('winMoves');
+    const winTimeEl  = document.getElementById('winTime');
+
+    function formatTime(s) {
+      return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      timerInterval = setInterval(() => {
+        seconds++;
+        timerEl.textContent = formatTime(seconds);
+      }, 1000);
+    }
+
+    function shuffle(arr) {
+      return arr.sort(() => Math.random() - 0.5);
+    }
+
+    function startGame() {
+      // Reset state
+      clearInterval(timerInterval);
+      seconds = 0; moves = 0; matched = 0;
+      flipped = []; locked = false; started = false;
+      movesEl.textContent = '0';
+      pairsEl.textContent = `0 / ${TOTAL_PAIRS}`;
+      timerEl.textContent = '0:00';
+      winOverlay.classList.remove('show');
+
+      // Build card data: 8 pairs of (col, row) segments
+      const segments = [];
+      for (let r = 0; r < IMG_ROWS; r++) {
+        for (let c = 0; c < IMG_COLS; c++) {
+          segments.push({ col: c, row: r });
+        }
+      }
+      cards = shuffle([...segments, ...segments].map((seg, i) => ({ ...seg, id: i })));
+      renderBoard();
+    }
+
+    function renderBoard() {
+      board.innerHTML = '';
+      // Determine card size from board width after render
+      // Use requestAnimationFrame to get real dimensions
+      cards.forEach((card, idx) => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.dataset.idx = idx;
+        el.innerHTML = `
+          <div class="card-inner">
+            <div class="card-back">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#62d84e" stroke-width="1.5">
+                <path d="M3 17l4-8 4 4 4-6 4 10"/>
+                <circle cx="18" cy="5" r="2" fill="#62d84e" stroke="none"/>
+              </svg>
+            </div>
+            <div class="card-front" id="front-${idx}"></div>
+          </div>`;
+        el.addEventListener('click', () => onCardClick(idx));
+        board.appendChild(el);
+      });
+
+      // Set photo tiles once layout is known
+      requestAnimationFrame(() => {
+        const firstCard = board.querySelector('.card');
+        if (!firstCard) return;
+        const cardW = firstCard.offsetWidth;
+        const cardH = firstCard.offsetHeight;
+        const imgW  = cardW * IMG_COLS;
+        const imgH  = cardH * IMG_ROWS;
+
+        cards.forEach((card, idx) => {
+          const front = document.getElementById(`front-${idx}`);
+          const img   = document.createElement('img');
+          img.src = './photo.jpg';
+          img.style.cssText = `
+            width: ${imgW}px;
+            height: ${imgH}px;
+            left: ${-card.col * cardW}px;
+            top:  ${-card.row * cardH}px;
+            object-fit: cover;
+            image-orientation: from-image;
+            pointer-events: none;
+            user-select: none;
+          `;
+          front.appendChild(img);
+        });
+      });
+    }
+
+    function onCardClick(idx) {
+      if (locked) return;
+      const el = board.querySelector(`[data-idx="${idx}"]`);
+      if (!el || el.classList.contains('flipped') || el.classList.contains('matched')) return;
+
+      // Start timer on first click
+      if (!started) { started = true; startTimer(); }
+
+      el.classList.add('flipped');
+      flipped.push(idx);
+
+      if (flipped.length === 2) {
+        locked = true;
+        moves++;
+        movesEl.textContent = moves;
+        checkMatch();
+      }
+    }
+
+    function checkMatch() {
+      const [a, b] = flipped;
+      const ca = cards[a], cb = cards[b];
+      const isMatch = ca.col === cb.col && ca.row === cb.row;
+
+      if (isMatch) {
+        const ea = board.querySelector(`[data-idx="${a}"]`);
+        const eb = board.querySelector(`[data-idx="${b}"]`);
+        ea.classList.add('matched');
+        eb.classList.add('matched');
+        matched++;
+        pairsEl.textContent = `${matched} / ${TOTAL_PAIRS}`;
+        flipped = [];
+        locked = false;
+
+        if (matched === TOTAL_PAIRS) {
+          clearInterval(timerInterval);
+          setTimeout(showWin, 500);
+        }
+      } else {
+        setTimeout(() => {
+          const ea = board.querySelector(`[data-idx="${a}"]`);
+          const eb = board.querySelector(`[data-idx="${b}"]`);
+          ea.classList.remove('flipped');
+          eb.classList.remove('flipped');
+          flipped = [];
+          locked = false;
+        }, 900);
+      }
+    }
+
+    function showWin() {
+      winMovesEl.textContent = moves;
+      winTimeEl.textContent  = formatTime(seconds);
+      winOverlay.classList.add('show');
+    }
+
+    document.getElementById('restartBtn').addEventListener('click', startGame);
+
+    // Recalculate tile sizes on window resize
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => renderBoard(), 150);
+    });
+
+    startGame();
+  </script>
+
+</body>
+</html>
